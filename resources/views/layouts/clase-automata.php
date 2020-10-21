@@ -52,12 +52,15 @@ class AFD
                                     ["b"]=> string(2) "q1"
                                     }
              }
-    */
-/*    public function  
+    public function Para simplificar un automata
+
+    public function Para complemento, union, concatenacion, e interseccion entre ambos automatas
+
+    public function simplificar cada uno de los de arriba
 */
 }
 /* class AFND
 {
-    private 
+    private
 
 } */

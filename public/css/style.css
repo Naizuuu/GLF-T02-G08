@@ -34,14 +34,11 @@ body {
 }
 
 .cover-container {
-    max-width: 100%;
+    max-width: 80%;
     overflow: auto;
 }
 
-
-/*
- * Header
- */
+/* Header */
 .masthead {
     margin-bottom: 2rem;
 }
@@ -72,6 +69,7 @@ body {
     border-bottom-color: #fff;
 }
 
+/* Media Queries */
 @media (min-width: 48em) {
   .masthead-brand {
     float: left;
@@ -81,10 +79,21 @@ body {
   }
 }
 
+@media only screen and (max-width: 576px) {
+    .display-1 {
+        font-size: 3rem !important;
+    }
 
-/*
- * Cover
- */
+    main > a > button{
+        width: 100% !important;
+    }
+
+    .masthead-brand + .nav-masthead, .masthead-brand {
+        display: none !important;
+    }
+}
+
+/* Cover */
 .cover {
     padding: 0 1.5rem;
 }
@@ -99,3 +108,22 @@ body {
 .mastfoot {
     color: rgba(255, 255, 255, .5);
 }
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    display: none;
+}
+/* ::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    box-shadow: outline 0 0 5px black; 
+    background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+} */
