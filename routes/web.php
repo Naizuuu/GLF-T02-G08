@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InicioController;
+use App\Http\Controllers\AutomatasController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,3 +16,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', InicioController::class)->name('home');
+
+Route::get('/automatas/', [AutomatasController::class, 'index'])->name('automatas');
