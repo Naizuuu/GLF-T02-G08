@@ -19,6 +19,13 @@ a:hover {
     border: .05rem solid #fff;
 }
 
+.custom-btn {
+    margin-top: 4% !important; 
+    width: auto !important; 
+    border-radius: 50px !important; 
+    display: inline-flex !important;
+}
+
 html,
 body {
     height: 100%;
