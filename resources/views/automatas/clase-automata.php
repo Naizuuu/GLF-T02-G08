@@ -32,15 +32,15 @@
                 }
             }
         }
-        private function crearTablaDeEstadosDistinguibles()
+        private function iniciarTablaDeEstadosDistinguibles()
         {
             $tablaDeEstadosDistinguibles = [];
             for ($i = 1; $i < count($this->conjuntoDeIdentificadores); $i++) {
                 for ($j = 0; $j < $i; $j++) {
-                    $tabla_de_estados_distinguibles[$this->conjuntoDeIdentificadores[$i]][$this->conjuntoDeIdentificadores[$j]] = "";
+                    $tablaDeEstadosDistinguibles[$this->conjuntoDeIdentificadores[$i]][$this->conjuntoDeIdentificadores[$j]] = "";
                 }
             }
-            return $tabla_de_estados_distinguibles;
+            return $tablaDeEstadosDistinguibles;
         }
         private function sonDistinguibles($estadoI, $estadoJ)
         {
@@ -53,9 +53,9 @@
                 return false;
             }
         }
-        public function simplificacion()
+        public function tablaDeEstadosDistinguibles()
         {
-            $tablaDeEstadosDistinguibles = $this->crearTablaDeEstadosDistinguibles();
+            $tablaDeEstadosDistinguibles = $this->iniciarTablaDeEstadosDistinguibles();
             foreach($tablaDeEstadosDistinguibles as $estadoI => $arreglo){
                 foreach($arreglo as $estadoJ => $marca){
                     if($this->sonDistinguibles($estadoI, $estadoJ)){
@@ -68,8 +68,38 @@
                 foreach($arreglo as $estadoJ => $marca)
                 {
                     if($tablaDeEstadosDistinguibles[$estadoI][$estadoJ]!='x'){
-                        for($i = 0; $i < count($this->alfabetoDeEntrada); $i++)
-                        if($this->funcionDeTransicion)
+                        for($i = 0; $i < count($this->alfabetoDeEntrada); $i++){
+                            $estado1 = $this->funcionDeTransicion[$estadoI][$this->alfabetoDeEntrada[$i]];
+                            $estado2 = $this->funcionDeTransicion[$estadoJ][$this->alfabetoDeEntrada[$i]];
+                            if($this->sonDistinguibles($estado1, $estado2)){
+                                $tablaDeEstadosDistinguibles[$estadoI][$estadoJ]='x';
+                            }
+                        }
+                        
+                    }
+                }
+            }
+            return $tablaDeEstadosDistinguibles;
+        }
+        public function simplificacion ()
+        {
+            $tablaDeEstadosDistinguibles = $this->tablaDeEstadosDistinguibles();
+            foreach($tablaDeEstadosDistinguibles as $estadoI => $arreglo)
+            {
+                foreach($arreglo as $estadoJ => $marca)
+                {
+                    if($tablaDeEstadosDistinguibles[$estadoI][$estadoJ]!='x'){
+                        unset($this->funcionDeTransicion[$estadoI]);
+                        unset($this->conjuntoDeIdentificadores[array_search($estadoI, $this->conjuntoDeIdentificadores)]);
+                        unset($this->estadosFinales[array_search($estadoI, $this->estadosFinales)]);
+                        $this->estadoInicial = (string)$estadoJ;
+                        foreach ($this->funcionDeTransicion as $posicionI => $transiciones) {
+                            foreach ($transiciones as $alfabeto => $estado) {
+                                if ($estado == $estadoI) {
+                                    $this->funcionDeTransicion[$posicionI][$alfabeto] = $posicionI;
+                                }
+                            }
+                        }
                     }
                 }
             }
