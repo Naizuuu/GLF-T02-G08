@@ -37,45 +37,62 @@
             $tablaDeEstadosDistinguibles = [];
             for ($i = 1; $i < count($this->conjuntoDeIdentificadores); $i++) {
                 for ($j = 0; $j < $i; $j++) {
-                    $tablaDeEstadosDistinguibles[$this->conjuntoDeIdentificadores[$i]][$this->conjuntoDeIdentificadores[$j]] = "";
+                    $tablaDeEstadosDistinguibles[$this->conjuntoDeIdentificadores[$i]][$this->conjuntoDeIdentificadores[$j]] = ["",[]];
                 }
             }
             return $tablaDeEstadosDistinguibles;
         }
-        private function sonDistinguibles($estadoI, $estadoJ)
-        {
-            if((in_array($estadoI, $this->estadosFinales) && !in_array($estadoJ, $this->estadosFinales)) || (!in_array($estadoI, $this->estadosFinales) && in_array($estadoJ, $this->estadosFinales)))
-            {
-                return true;
+        public function distinguirFinalesYNoFinales($tablaDeEstadosDistinguibles){
+            foreach($tablaDeEstadosDistinguibles as $estadoI => $arreglo){
+                foreach($arreglo as $estadoJ => $marca){
+                    if((in_array($estadoI, $this->estadosFinales) && !in_array($estadoJ, $this->estadosFinales)) || (!in_array($estadoI, $this->estadosFinales) && in_array($estadoJ, $this->estadosFinales))){
+                        $tablaDeEstadosDistinguibles[$estadoI][$estadoJ][0] = 'x';
+                    }
+                }
             }
-            else
-            {
-                return false;
-            }
+            return $tablaDeEstadosDistinguibles;
         }
         public function tablaDeEstadosDistinguibles()
         {
             $tablaDeEstadosDistinguibles = $this->iniciarTablaDeEstadosDistinguibles();
-            foreach($tablaDeEstadosDistinguibles as $estadoI => $arreglo){
-                foreach($arreglo as $estadoJ => $marca){
-                    if($this->sonDistinguibles($estadoI, $estadoJ)){
-                        $tablaDeEstadosDistinguibles[$estadoI][$estadoJ] = 'x';
-                    }
-                }
-            }
+            $tablaDeEstadosDistinguibles = $this->distinguirFinalesYNoFinales($tablaDeEstadosDistinguibles);
             foreach($tablaDeEstadosDistinguibles as $estadoI => $arreglo)
             {
                 foreach($arreglo as $estadoJ => $marca)
                 {
-                    if($tablaDeEstadosDistinguibles[$estadoI][$estadoJ]!='x'){
+                    if($tablaDeEstadosDistinguibles[$estadoI][$estadoJ][0]!='x'){
                         for($i = 0; $i < count($this->alfabetoDeEntrada); $i++){
                             $estado1 = $this->funcionDeTransicion[$estadoI][$this->alfabetoDeEntrada[$i]];
                             $estado2 = $this->funcionDeTransicion[$estadoJ][$this->alfabetoDeEntrada[$i]];
-                            if($this->sonDistinguibles($estado1, $estado2)){
-                                $tablaDeEstadosDistinguibles[$estadoI][$estadoJ]='x';
+                            if(array_key_exists($estado1, $tablaDeEstadosDistinguibles) && array_key_exists($estado2, $tablaDeEstadosDistinguibles[$estado1])){
+                                if($tablaDeEstadosDistinguibles[$estado1][$estado2][0]=='x'){
+                                    $tablaDeEstadosDistinguibles[$estadoI][$estadoJ][0]='x';
+                                    for($j=0;$j<count($tablaDeEstadosDistinguibles[$estadoI][$estadoJ][1]);$j++){
+                                        $tablaDeEstadosDistinguibles[$tablaDeEstadosDistinguibles[$estadoI][$estadoJ][1][$j][0]][$tablaDeEstadosDistinguibles[$estadoI][$estadoJ][1][$j][1]][0]='x';
+                                    }
+                                }
+                                else{
+                                    if($estado1 != $estadoI && $estado2 != $estadoJ){
+                                        $tablaDeEstadosDistinguibles[$estado1][$estado2][1][] = [$estadoI, $estadoJ];
+                                    }
+                                }
+                            }
+                            else{
+                                if(array_key_exists($estado2, $tablaDeEstadosDistinguibles) && array_key_exists($estado1, $tablaDeEstadosDistinguibles[$estado2])){
+                                    if($tablaDeEstadosDistinguibles[$estado2][$estado1][0]=='x'){
+                                        $tablaDeEstadosDistinguibles[$estadoI][$estadoJ][0]='x';
+                                        for($j=0;$j<count($tablaDeEstadosDistinguibles[$estadoI][$estadoJ][1]);$j++){
+                                            $tablaDeEstadosDistinguibles[$tablaDeEstadosDistinguibles[$estadoI][$estadoJ][1][$j][0]][$tablaDeEstadosDistinguibles[$estadoI][$estadoJ][1][$j][1]][0]='x';
+                                        }
+                                    }
+                                    else{
+                                        if($estado2 != $estadoI && $estado1 != $estadoJ){
+                                            $tablaDeEstadosDistinguibles[$estado2][$estado1][1][] = [$estadoI, $estadoJ];
+                                        }
+                                    }
+                                }
                             }
                         }
-                        
                     }
                 }
             }
@@ -88,15 +105,19 @@
             {
                 foreach($arreglo as $estadoJ => $marca)
                 {
-                    if($tablaDeEstadosDistinguibles[$estadoI][$estadoJ]!='x'){
+                    if($tablaDeEstadosDistinguibles[$estadoI][$estadoJ][0]!='x'){
                         unset($this->funcionDeTransicion[$estadoI]);
                         unset($this->conjuntoDeIdentificadores[array_search($estadoI, $this->conjuntoDeIdentificadores)]);
-                        unset($this->estadosFinales[array_search($estadoI, $this->estadosFinales)]);
-                        $this->estadoInicial = (string)$estadoJ;
+                        if(in_array($estadoI, $this->estadosFinales)){
+                            unset($this->estadosFinales[array_search($estadoI, $this->estadosFinales)]);
+                        }
+                        if($estadoI == $this->estadoInicial){
+                            $this->estadoInicial = (string)$estadoJ;
+                        }
                         foreach ($this->funcionDeTransicion as $posicionI => $transiciones) {
                             foreach ($transiciones as $alfabeto => $estado) {
                                 if ($estado == $estadoI) {
-                                    $this->funcionDeTransicion[$posicionI][$alfabeto] = $posicionI;
+                                    $this->funcionDeTransicion[$posicionI][$alfabeto] = (string)$estadoJ;
                                 }
                             }
                         }
