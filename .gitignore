@@ -10,6 +10,4 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-scanner.bat
-sonar-project.properties
 /.scannerwork
