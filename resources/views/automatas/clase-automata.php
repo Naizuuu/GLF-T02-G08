@@ -116,5 +116,14 @@
                 }
             }
         }
+        public function complemento() {
+            $nuevosEstadosFinales = [];
+            foreach ($this->conjuntoDeIdentificadores as $identificador) {
+                if(!in_array($identificador, $this->estadosFinales)) {
+                    $nuevosEstadosFinales[] = $identificador;
+                }
+            }
+            $this->estadosFinales = $nuevosEstadosFinales;
+        }
     }
 ?>
