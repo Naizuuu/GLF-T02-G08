@@ -1,9 +1,9 @@
 <?php
     class AFD {
-        private $conjuntoDeIdentificadores = [];
-        private $alfabetoDeEntrada = [];
-        private $estadoInicial = "";
-        private $estadosFinales = [];
+        protected $conjuntoDeIdentificadores = [];
+        protected $alfabetoDeEntrada = [];
+        protected $estadoInicial = "";
+        protected $estadosFinales = [];
         private $funcionDeTransicion = [];
 
         public function __construct($identificadores, $alfabeto, $estadosIF) {
@@ -125,5 +125,21 @@
             }
             $this->estadosFinales = $nuevosEstadosFinales;
         }
+    }
+
+    class AFND extends AFD{
+        private $relacionDeTransicion = [];
+
+        public function llenarRelacionDeTransicion($funcion) {
+            $funcionPuntoYComa = explode(";", $funcion);
+            for ($i = 0;$i < count($funcionPuntoYComa);$i++) {
+                $transiciones = explode(",", $funcionPuntoYComa[$i]);
+                $this->relacionDeTransicion[$transiciones[0]] = [];
+                for ($j = 1;$j < count($transiciones);$j += 2) {
+                    $this->relacionDeTransicion[$transiciones[0]][$transiciones[$j]] = $transiciones[$j + 1];
+                }
+            }
+        }
+        
     }
 ?>
