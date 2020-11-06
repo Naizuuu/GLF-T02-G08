@@ -2,22 +2,15 @@
     class AFD {
         protected $conjuntoDeIdentificadores = [];
         protected $alfabetoDeEntrada = [];
-        protected $estadoInicial = "";
+        private $estadoInicial = "";
         protected $estadosFinales = [];
         private $funcionDeTransicion = [];
 
-        public function __construct($identificadores, $alfabeto, $estadosIF) {
+        public function __construct($identificadores, $alfabeto, $estadoI, $estadosF) {
             $this->conjuntoDeIdentificadores = explode(",", $identificadores);
             $this->alfabetoDeEntrada = explode(",", $alfabeto);
-            $estadosSeparadosPorComa = explode(",", $estadosIF);
-            for ($i = 0;$i < count($estadosSeparadosPorComa);$i++) {
-                if ($i == 0) {
-                    $this->estadoInicial = $estadosSeparadosPorComa[$i];
-                }
-                else {
-                    $this->estadosFinales[$i - 1] = $estadosSeparadosPorComa[$i];
-                }
-            }
+            $this->estadoInicial = $estadoI;
+            $this->estadosFinales = explode(",", $estadosF);
         }
         public function llenarFuncionDeTransicion($funcion) {
             $funcionPuntoYComa = explode(";", $funcion);
@@ -128,18 +121,30 @@
     }
 
     class AFND extends AFD{
+        private $estadosIniciales = [];
         private $relacionDeTransicion = [];
 
+        public function __construct() {}
+        public function __construct1($identificadores, $alfabeto, $estadosI, $estadosF) {
+            $this->conjuntoDeIdentificadores = explode(",", $identificadores);
+            $this->alfabetoDeEntrada = explode(",", $alfabeto);
+            $this->estadosIniciales = explode(",", $estadosI);
+            $this->estadosFinales = explode(",", $estadosF);
+        }
         public function llenarRelacionDeTransicion($funcion) {
             $funcionPuntoYComa = explode(";", $funcion);
             for ($i = 0;$i < count($funcionPuntoYComa);$i++) {
                 $transiciones = explode(",", $funcionPuntoYComa[$i]);
                 $this->relacionDeTransicion[$transiciones[0]] = [];
                 for ($j = 1;$j < count($transiciones);$j += 2) {
-                    $this->relacionDeTransicion[$transiciones[0]][$transiciones[$j]] = $transiciones[$j + 1];
+                    $this->relacionDeTransicion[$transiciones[0]][$transiciones[$j]][] = $transiciones[$j + 1];
                 }
             }
         }
-        
+        public function union($automata1, $automata2) {
+            $automata3 = new AFND();
+            $automata3->conjuntoDeIdentificadores[] = "Q00";
+            $automata3->conjuntoDeIdentificadores = array_merge($automata1->conjuntoDeIdentificadores,$automata2->conjuntoDeIdentificadores);
+        }
     }
 ?>
