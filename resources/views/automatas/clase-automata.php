@@ -23,7 +23,7 @@ class AFD
             $this->funcionDeTransicion[$transiciones[0]] = [];
             for ($j = 1;$j < count($transiciones);$j += 2)
             {
-                $this->funcionDeTransicion[$transiciones[0]][$transiciones[$j]] = $transiciones[$j + 1];
+                $this->funcionDeTransicion[$transiciones[0]][$transiciones[$j]][] = $transiciones[$j + 1];
             }
         }
     }
@@ -99,8 +99,8 @@ class AFD
                 {
                     for ($i = 0;$i < count($this->alfabetoDeEntrada);$i++)
                     {
-                        $estado1 = $this->funcionDeTransicion[$estadoI][$this->alfabetoDeEntrada[$i]];
-                        $estado2 = $this->funcionDeTransicion[$estadoJ][$this->alfabetoDeEntrada[$i]];
+                        $estado1 = $this->funcionDeTransicion[$estadoI][$this->alfabetoDeEntrada[$i]][0];
+                        $estado2 = $this->funcionDeTransicion[$estadoJ][$this->alfabetoDeEntrada[$i]][0];
                         $tablaDeEstadosDistinguibles = $this->llenarTabla($estado1, $estado2, $tablaDeEstadosDistinguibles, $estadoI, $estadoJ);
                     }
                 }
@@ -116,7 +116,7 @@ class AFD
             {
                 if ($estado == $estadoI)
                 {
-                    $this->funcionDeTransicion[$posicionI][$alfabeto] = (string)$estadoJ;
+                    $this->funcionDeTransicion[$posicionI][$alfabeto][0] = (string)$estadoJ;
                 }
             }
         }
@@ -163,8 +163,8 @@ class AFND extends AFD
 {
     private $relacionDeTransicion = [];
 
-    public function __construct()
-    {
+    public function __construct() {
+        // Inicia el objeto sin parámetros.
     }
     public function crearAFND($identificadores, $alfabeto, $estadoI, $estadosF)
     {
@@ -236,7 +236,7 @@ class AFND extends AFD
         {
             $automata3->relacionDeTransicion = array_merge($automata1->funcionDeTransicion, $automata2->funcionDeTransicion);
             foreach($automata1->estadosFinales as $estadoFinal) {
-                $automata3->relacionDeTransicion[$estadoFinal]["@"] = $automata2->estadoInicial;
+                $automata3->relacionDeTransicion[$estadoFinal]["@"][] = $automata2->estadoInicial;
             }
         }
         else
@@ -244,22 +244,31 @@ class AFND extends AFD
             if (get_class($automata1) == "AFD" && get_class($automata2) == "AFND")
             {
                 $automata3->relacionDeTransicion = array_merge($automata1->funcionDeTransicion, $automata2->relacionDeTransicion);
+                foreach($automata1->estadosFinales as $estadoFinal) {
+                    $automata3->relacionDeTransicion[$estadoFinal]["@"][] = $automata2->estadoInicial;
+                }
             }
             else
             {
                 if (get_class($automata1) == "AFND" && get_class($automata2) == "AFD")
                 {
                     $automata3->relacionDeTransicion = array_merge($automata1->relacionDeTransicion, $automata2->funcionDeTransicion);
+                    foreach($automata1->estadosFinales as $estadoFinal) {
+                        $automata3->relacionDeTransicion[$estadoFinal]["@"][] = $automata2->estadoInicial;
+                    }
                 }
                 else
                 {
                     if (get_class($automata1) == "AFND" && get_class($automata2) == "AFND")
                     {
                         $automata3->relacionDeTransicion = array_merge($automata1->relacionDeTransicion, $automata2->relacionDeTransicion);
+                        foreach($automata1->estadosFinales as $estadoFinal) {
+                            $automata3->relacionDeTransicion[$estadoFinal]["@"][] = $automata2->estadoInicial;
+                        }
                     }
                 }
             }
         }
-    }
+        return $automata3;
 }
 ?>
