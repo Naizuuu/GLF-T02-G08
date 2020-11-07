@@ -19,4 +19,4 @@ Route::get('/', InicioController::class)->name('home');
 
 Route::get('/automatas', [AutomatasController::class, 'index'])->name('automatas');
 
-Route::get('/automatas/afd/afd', [AutomatasController::class, 'afd_afd'])->name('afd_afd');
+Route::get('/automatas/home/', [AutomatasController::class, 'automata_home'])->name('automata_home');

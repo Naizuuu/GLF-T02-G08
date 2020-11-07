@@ -7,7 +7,7 @@
     <h1 class="text-center display-1">¿Qué tipo de autómatas ingresará?</h1>
     <div class="container">
 
-      <form style="margin-top: 5%;" method="GET" action="{{route('afd_afd')}}">
+      <form style="margin-top: 5%;" method="GET" action="{{route('automata_home')}}">
         <div class="row">
           <div class="col-sm"> 
               <div class="input-group" style="margin-top: 3%;">

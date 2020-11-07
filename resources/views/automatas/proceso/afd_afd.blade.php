@@ -19,7 +19,7 @@
             <div class="col-sm"> 
                 <div class="form-group" style="margin-top: 2%;">
                     <label for="identificadores_afd2">Identificadores AFD</label>
-                    <input type="text" class="form-control" name="identificadores_afd2" id="identificadores_afd2" title="Debe ingresar los identificadores como el ejemplo: q0,q1,q2" pattern="^[a-zA-Z0-9]+(,[a-zA-Z0-9]+)*$" placeholder="Ingrese los identificadores separados por comas. (Ej: q0,q1,q2)" autocomplete="off" value="<?php echo htmlspecialchars($_GET['identificadores_afd2'] ?? '', ENT_QUOTES); ?>" required>
+                    <input type="text" class="form-control" name="identificadores_afd2" id="identificadores_afd2" title="Debe ingresar los identificadores como el ejemplo: q0,q1,q2" pattern="^[a-zA-Z0-9]+(,[a-zA-Z0-9]+)*$" placeholder="Ingrese los -identificadores separados por comas. (Ej: q0,q1,q2)" autocomplete="off" value="<?php echo htmlspecialchars($_GET['identificadores_afd2'] ?? '', ENT_QUOTES); ?>" required>
                 </div>
             </div>
         </div>
@@ -27,4 +27,6 @@
         <button style="" type="submit" class="btn btn-info btn-lg btn-block custom-btn" onclick="">Confirmar</button>
     </form>
 
+
+    {{-- ESTO HAY QUE EDITARLO YA QUE SE CAMBIO TODO A LA VIEW DE: automata_home --}}
 @endsection
