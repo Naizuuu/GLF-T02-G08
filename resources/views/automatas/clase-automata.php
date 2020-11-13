@@ -250,16 +250,23 @@ class AFND extends AFD
                 if (get_class($automata1) == "AFND" && get_class($automata2) == "AFD")
                 {
                     $automata3->relacionDeTransicion = array_merge($automata1->relacionDeTransicion, $automata2->funcionDeTransicion);
+                    foreach($automata1->estadosFinales as $estadoFinal) {
+                        $automata3->relacionDeTransicion[$estadoFinal]["@"][] = $automata2->estadoInicial;
+                    }
                 }
                 else
                 {
                     if (get_class($automata1) == "AFND" && get_class($automata2) == "AFND")
                     {
                         $automata3->relacionDeTransicion = array_merge($automata1->relacionDeTransicion, $automata2->relacionDeTransicion);
+                        foreach($automata1->estadosFinales as $estadoFinal) {
+                            $automata3->relacionDeTransicion[$estadoFinal]["@"][] = $automata2->estadoInicial;
+                        }
                     }
                 }
             }
         }
+        return $automata3;
     }
 }
 ?>
