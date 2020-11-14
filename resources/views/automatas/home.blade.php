@@ -4,13 +4,14 @@
 
 @section('content')
 
-<form id="form" method="GET"{{-- action="{{route('automata_home')}} --}}>
-    @php $r = 0; @endphp
-    <div id="test1">@include('layouts.partials.stepOne')</div>
+<form id="form" method="GET" {{-- action="{{route('automata_home')}} --}} autocomplete="off">
+    <div id="stepOne">@include('layouts.partials.stepOne')</div>
     {{-- <div id="test2" style="visibility: hidden; max-height: 0;">@include('layouts.partials.stepTwo')</div> --}}
-    <div id="test2">@include('layouts.partials.stepTwo')</div>
+    <div id="stepTwo">@include('layouts.partials.stepTwo')</div>
 
     {{-- <button type="button" class="btn btn-info btn-lg btn-block custom-btn" onclick="history.back(-1)">Volver atrás</button> --}}
-    <button type="submit" class="btn btn-info btn-lg btn-block custom-btn" onclick="showDiv()">Confirmar</button>
+    
+    <button type="submit" class="btn btn-info btn-lg btn-block custom-btn" onclick="/* testeando() */">Confirmar</button>
+    {{-- <button type="button" class="btn btn-info btn-lg btn-block custom-btn" onclick="testeando()">Siguiente</button> --}}
 </form>
 @endsection
