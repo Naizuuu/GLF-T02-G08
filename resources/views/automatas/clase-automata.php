@@ -1,12 +1,16 @@
 <?php
 class AFD {
-    protected $conjuntoDeIdentificadores = [];
-    protected $alfabetoDeEntrada = [];
-    private $estadoInicial = "";
-    protected $estadosFinales = [];
-    private $funcionDeTransicion = [];
+    public $conjuntoDeIdentificadores = [];
+    public $alfabetoDeEntrada = [];
+    public $estadoInicial = "";
+    public $estadosFinales = [];
+    public $funcionDeTransicion = [];
 
-    public function __construct($identificadores, $alfabeto, $estadoI, $estadosF) {
+    public function __construct() {
+        // Crea el objeto sin parámetros.
+    }
+
+    public function crearAFD($identificadores, $alfabeto, $estadoI, $estadosF) {
         $this->conjuntoDeIdentificadores = explode(",", $identificadores);
         $this->alfabetoDeEntrada = explode(",", $alfabeto);
         $this->estadoInicial = $estadoI;
@@ -121,10 +125,10 @@ class AFD {
 }
 
 class AFND extends AFD {
-    private $relacionDeTransicion = [];
+    public $relacionDeTransicion = [];
 
     public function __construct() {
-        // Inicia el objeto sin parámetros.
+        // Crea el objeto sin parámetros.
     }
     public function crearAFND($identificadores, $alfabeto, $estadoI, $estadosF) {
         $this->conjuntoDeIdentificadores = explode(",", $identificadores);
@@ -190,45 +194,197 @@ class AFND extends AFD {
     }
     public function concatenacion($automata1, $automata2) {
         $automata3 = new AFND;
-        $automata3->conjuntoDeIdentificadores = array_merge($automata1->conjuntoDeIDentificadores, $automata2->conjuntoDeIdentificadores);
+        $automata3->conjuntoDeIdentificadores = array_merge($automata1->conjuntoDeIdentificadores, $automata2->conjuntoDeIdentificadores);
         $automata3->alfabetoDeEntrada = $automata1->alfabetoDeEntrada;
         $automata3->estadoInicial = $automata1->estadoInicial;
         $automata3->estadosFinales = $automata2->estadosFinales;
-        if (get_class($automata1) == "AFD" && get_class($automata2) == "AFD")
-        {
-            $automata3->relacionDeTransicion = array_merge($automata1->funcionDeTransicion, $automata2->funcionDeTransicion);
-            foreach($automata1->estadosFinales as $estadoFinal) {
-                $automata3->relacionDeTransicion[$estadoFinal]["@"] = $automata2->estadoInicial;
+        $automata3->relacionDeTransicion = $this->concatenarFuncionesDeTransicion(get_class($automata1), get_class($automata2), $automata1, $automata2);
+        return $automata3;
+    }
+    private function separarLasTransiciones($afnd) {
+        $n = 0;
+        foreach ($afnd->relacionDeTransicion as $key1 => $transiciones) {
+            foreach ($transiciones as $key2 => $estadosDeLlegada) {
+                if (strlen((string)$key2) > 1) {
+                    foreach ($estadosDeLlegada as $estadoDeLlegada) {
+                        $estado = $key1;
+                        for ($i = 0;$i < (strlen((string)$key2) - 1);$i++) {
+                            $afnd->relacionDeTransicion[$estado][$key2[$i]][] = "n".$n;
+                            $estado = "n".$n;
+                            $afnd->conjuntoDeIdentificadores[] = "n".$n;
+                            $n++;
+                        }
+                        $afnd->relacionDeTransicion[$estado][$key2[strlen((string)$key2)-1]][] = $estadoDeLlegada;
+                    }
+                    unset($afnd->relacionDeTransicion[$key1][$key2]);
+                }
             }
         }
-        else
-        {
-            if (get_class($automata1) == "AFD" && get_class($automata2) == "AFND")
-            {
-                $automata3->relacionDeTransicion = array_merge($automata1->funcionDeTransicion, $automata2->relacionDeTransicion);
+    }
+    private function iniciales($estado, $afnd) {
+        if(!array_key_exists("@", $afnd->relacionDeTransicion[$estado])) {
+            return [$estado];
+        }
+        else {
+            foreach($afnd->relacionDeTransicion[$estado]["@"] as $e) {
+                $valor[] = $estado;
+                $valor = array_merge($valor, $this->iniciales($e, $afnd));
+                
             }
-            else
-            {
-                if (get_class($automata1) == "AFND" && get_class($automata2) == "AFD")
-                {
-                    $automata3->relacionDeTransicion = array_merge($automata1->relacionDeTransicion, $automata2->funcionDeTransicion);
-                    foreach($automata1->estadosFinales as $estadoFinal) {
-                        $automata3->relacionDeTransicion[$estadoFinal]["@"][] = $automata2->estadoInicial;
+            return $valor;
+        }
+    }
+    private function transicionesConElAlfabeto($caracter, $estado, $afnd) {
+        if($caracter == "" && array_key_exists("@", $afnd->relacionDeTransicion[$estado]) && count($afnd->relacionDeTransicion[$estado]["@"]) == 1 && $afnd->relacionDeTransicion[$estado]["@"][0] == $estado) {
+            return [$estado];
+        }
+        else {
+            if($caracter == "" && !array_key_exists("@", $afnd->relacionDeTransicion[$estado])) {
+                return [$estado];
+            }
+            else {
+                if(array_key_exists($caracter, $afnd->relacionDeTransicion[$estado]) && array_key_exists("@", $afnd->relacionDeTransicion[$estado])) {
+                    foreach($afnd->relacionDeTransicion[$estado][$caracter] as $c) {
+                        $arreglo=[];
+                        $arreglo = array_merge($arreglo, $this->transicionesConElAlfabeto("", $c, $afnd));
                     }
+                    foreach($afnd->relacionDeTransicion[$estado]["@"] as $d) {
+                        $arreglo = array_merge($arreglo, $this->transicionesConElAlfabeto($caracter, $d, $afnd));
+                    }
+                    return $arreglo;
                 }
-                else
-                {
-                    if (get_class($automata1) == "AFND" && get_class($automata2) == "AFND")
-                    {
-                        $automata3->relacionDeTransicion = array_merge($automata1->relacionDeTransicion, $automata2->relacionDeTransicion);
-                        foreach($automata1->estadosFinales as $estadoFinal) {
-                            $automata3->relacionDeTransicion[$estadoFinal]["@"][] = $automata2->estadoInicial;
+                else {
+                    if(array_key_exists($caracter, $afnd->relacionDeTransicion[$estado]) && !array_key_exists("@", $afnd->relacionDeTransicion[$estado])) {
+                        foreach($afnd->relacionDeTransicion[$estado][$caracter] as $c) {
+                            $arreglo = [];
+                            $arreglo = array_merge($arreglo, $this->transicionesConElAlfabeto("", $c, $afnd));
+                        }
+                        return $arreglo;
+                    }
+                    else {
+                        if(!array_key_exists($caracter, $afnd->relacionDeTransicion[$estado]) && array_key_exists("@", $afnd->relacionDeTransicion[$estado]) && $caracter == "") {
+                            foreach($afnd->relacionDeTransicion[$estado]["@"] as $c) {
+                                $arreglo[] = $estado;
+                                $arreglo = array_merge($arreglo, $this->transicionesConElAlfabeto($caracter, $c, $afnd));
+                            }
+                            return $arreglo;
+                        }
+                        else {
+                            if(!array_key_exists($caracter, $afnd->relacionDeTransicion[$estado]) && !array_key_exists("@", $afnd->relacionDeTransicion[$estado])) {
+                                return ["-"];
+                            }
                         }
                     }
                 }
             }
         }
-        return $automata3;
+    }
+    private function crearTabla($afnd) {
+        $estadosIniciales = $this->iniciales($afnd->estadoInicial, $afnd);
+        for($i = 0; $i < count($afnd->conjuntoDeIdentificadores); $i++) {
+            if(in_array($afnd->conjuntoDeIdentificadores[$i], $estadosIniciales)) {
+                $tabla[$i][] = "*";
+            }
+            else {
+                $tabla[$i][] = " ";
+            }
+            $tabla[$i][] = $afnd->conjuntoDeIdentificadores[$i];
+            for($j = 0; $j < count($afnd->alfabetoDeEntrada); $j++) {
+                $tabla[$i][$afnd->alfabetoDeEntrada[$j]] = $this->transicionesConElAlfabeto($afnd->alfabetoDeEntrada[$j], $afnd->conjuntoDeIdentificadores[$i], $afnd);
+            }
+        }
+        return $tabla;
+    }
+    private function buscarPosicionEnTabla($estado, $tabla) {
+        for($i = 0; $i < count($tabla) ; $i++) {
+            if($tabla[$i][1] == $estado) {
+                return $i;
+            }
+        }
+    }
+    private function crearElNuevoAutomata($tabla, $afnd) {
+        $afd = new AFD();
+        $afd->estadoInicial = "";
+        for($i = 0; $i < count($tabla); $i++) {
+            if($tabla[$i][0] == "*" && $afd->estadoInicial == "") {
+                $afd->estadoInicial = $afd->estadoInicial.$tabla[$i][1];
+            }
+            else {
+                if($tabla[$i][0] == "*" && $afd->estadoInicial != "") {
+                    $afd->estadoInicial = $afd->estadoInicial.",".$tabla[$i][1];
+                }
+            }
+        }
+        $afd->conjuntoDeIdentificadores[] = $afd->estadoInicial;
+        $afd->funcionDeTransicion[$afd->estadoInicial] = [];
+        $afd->alfabetoDeEntrada = $afnd->alfabetoDeEntrada;
+        $estadosPorRevisar[] = $afd->estadoInicial;
+        while(!empty($estadosPorRevisar)) {
+            $arregloProvisorio = [];
+            $identificadorProvisorio = $estadosPorRevisar[array_key_last($estadosPorRevisar)];
+            $identificador = explode(",", $identificadorProvisorio);
+            foreach($identificador as $estado) {
+                $posicionDeEstadoEnTabla = $this->buscarPosicionEnTabla($estado, $tabla);
+                foreach($tabla[$posicionDeEstadoEnTabla] as $caracter => $estadosDeLlegada) {
+                    if(!is_numeric($caracter) && array_key_exists($caracter, $arregloProvisorio)) {
+                        $arregloProvisorio[$caracter] = array_merge($arregloProvisorio[$caracter], array_unique($estadosDeLlegada));
+                        $arregloProvisorio[$caracter] = array_unique($arregloProvisorio[$caracter]);
+                    }
+                    else {
+                        if(!is_numeric($caracter)) {
+                            $arregloProvisorio[$caracter] = [];
+                            $arregloProvisorio[$caracter] = array_merge($arregloProvisorio[$caracter], array_unique($estadosDeLlegada));
+                            $arregloProvisorio[$caracter] = array_unique($arregloProvisorio[$caracter]);
+                        }
+                    }
+                }
+            }
+            foreach($arregloProvisorio as $key => $estados) {
+                if(count($estados) > 1 && in_array("-", $estados)) {
+                    unset($arregloProvisorio[$key][array_search("-", $estados)]);
+                }
+            }
+            foreach($arregloProvisorio as $caracter => $arreglos) {
+                $afd->funcionDeTransicion[$identificadorProvisorio][$caracter][] = implode(",", $arreglos);
+            }
+            if(!in_array($identificadorProvisorio, $afd->conjuntoDeIdentificadores)) {
+                $afd->conjuntoDeIdentificadores[] = $identificadorProvisorio;    
+            }
+            unset($estadosPorRevisar[array_search($identificadorProvisorio, $estadosPorRevisar)]);
+            foreach($arregloProvisorio as $estados) {
+                if(!array_key_exists(implode(",", $estados), $afd->funcionDeTransicion) && implode(",", $estados) != "-") {
+                    array_unshift($estadosPorRevisar, implode(",", $estados));
+                }
+            }
+        }
+        foreach($afd->conjuntoDeIdentificadores as $ident) {
+            foreach(explode(",",$ident) as $id) {
+                if(in_array($id, $afnd->estadosFinales)) {
+                    $afd->estadosFinales[] = $ident;
+                }
+            }
+        }
+        $sumidero = 0;
+        foreach($afd->funcionDeTransicion as $key1 => $trnscns) {
+            foreach($trnscns as $key2 => $trnscn) {
+                if($trnscn[0] == "-") {
+                    $afd->funcionDeTransicion[$key1][$key2][0] = "S";
+                    $sumidero = 1;
+                }
+            }
+        }
+        if($sumidero == 1) {
+            foreach($afd->alfabetoDeEntrada as $c) {
+                $afd->funcionDeTransicion["S"][$c][] = "S";
+            }
+            $afd->conjuntoDeIdentificadores[] = "S";
+        }
+        return $afd;
+    }
+    public function transformarAFNDaAFD($afnd) {
+        $this->separarLasTransiciones($afnd);
+        $tablaParaAutomataAFD = $this->crearTabla($afnd);
+        return $this->crearElNuevoAutomata($tablaParaAutomataAFD, $afnd);
     }
 }
 ?>
