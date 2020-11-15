@@ -18,12 +18,9 @@ class AFD {
     }
     public function llenarFuncionDeTransicion($funcion) {
         $funcionPuntoYComa = explode(";", $funcion);
-        for ($i = 0;$i < count($funcionPuntoYComa);$i++) {
+        for ($i = 0; $i < count($funcionPuntoYComa); $i++) {
             $transiciones = explode(",", $funcionPuntoYComa[$i]);
-            $this->funcionDeTransicion[$transiciones[0]] = [];
-            for ($j = 1;$j < count($transiciones);$j += 2) {
-                $this->funcionDeTransicion[$transiciones[0]][$transiciones[$j]][] = $transiciones[$j + 1];
-            }
+            $this->funcionDeTransicion[$transiciones[0]][$transiciones[1]][] = $transiciones[2];
         }
     }
     private function iniciarTablaDeEstadosDistinguibles() {
@@ -140,10 +137,7 @@ class AFND extends AFD {
         $funcionPuntoYComa = explode(";", $funcion);
         for ($i = 0;$i < count($funcionPuntoYComa);$i++) {
             $transiciones = explode(",", $funcionPuntoYComa[$i]);
-            $this->relacionDeTransicion[$transiciones[0]] = [];
-            for ($j = 1;$j < count($transiciones);$j += 2) {
-                $this->relacionDeTransicion[$transiciones[0]][$transiciones[$j]][] = $transiciones[$j + 1];
-            }
+            $this->relacionDeTransicion[$transiciones[0]][$transiciones[1]][] = $transiciones[2];
         }
     }
     private function unirFuncionesDeTransicion($tipoAutomata1, $tipoAutomata2, $automata1, $automata2) {
@@ -385,6 +379,15 @@ class AFND extends AFD {
         $this->separarLasTransiciones($afnd);
         $tablaParaAutomataAFD = $this->crearTabla($afnd);
         return $this->crearElNuevoAutomata($tablaParaAutomataAFD, $afnd);
+    }
+    public function interseccion($afd1, $afd2) {
+        $afd1->complemento();
+        $afd2->complemento();
+        $afnd = new AFND();
+        $afnd = $afnd->union($afd1, $afd2);
+        $afd3 = $afnd->transformarAFNDaAFD($afnd);
+        $afd3->complemento();
+        return $afd3;
     }
 }
 ?>
