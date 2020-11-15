@@ -97,7 +97,7 @@
 
 {{-- DEBUG FINAL --}}
 
-@isset($_GET[$cantEstado.'_eInicial'])
+{{-- @isset($_GET[$cantEstado.'_eInicial'])
     @php
         echo 'eInicial -> ';
         var_dump($_GET[$cantEstado.'_eInicial']);
@@ -114,7 +114,7 @@
         @endphp
         <br>
     @endisset
-@endfor
+@endfor --}}
 
 
 @php
