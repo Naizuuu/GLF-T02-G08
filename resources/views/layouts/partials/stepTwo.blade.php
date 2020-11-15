@@ -25,5 +25,18 @@
                 @include('layouts.partials.' . $automataDos, ['alfabeto' => $alfabeto, 'transicion' => $transicionB, 'iden' => 'q', 'cantEstado' => 'cantidadEstados2'])
             </div>
         </div>
+        @prepend('menu')
+        @if(isset($_GET['cantidadEstados1_eInicial']) && isset($_GET['cantidadEstados2_eInicial']))
+            {{-- @php
+                var_dump($_GET['cantidadEstados1']); 
+                var_dump($_GET['cantidadEstados1_eInicial']);
+                var_dump($_GET['cantidadEstados1_eFinal_' . 0]);
+                var_dump($_GET['cantidadEstados1_transicion']); 
+            @endphp --}}
+            <a style="text-decoration: none;" id="gotomenu" href="{{route('home')}}">
+                <button style="margin-top: 2%;" type="button" class="btn btn-success btn-lg btn-block">Ir al menu</button>
+            </a>
+        @endif
+        @endprepend
     </div>
 @endisset

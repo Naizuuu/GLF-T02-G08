@@ -93,7 +93,20 @@
         </div>
         @endfor
     </div>
+    <input type="text" style="display: none;" class="form-control" name="{{$cantEstado}}_transicion" value="{{$transicion}}">
 @endisset
+
+{{-- @isset($_GET[$cantEstado.'_transicion'])
+    @php var_dump($_GET[$cantEstado.'_transicion']); @endphp
+@endisset --}}
+
+{{-- @prepend('menu')
+    @if(isset($_GET['cantidadEstados1_eInicial']) && isset($_GET['cantidadEstados2_eInicial']))
+        <a style="text-decoration: none;" id="gotomenu" href="{{route('home')}}">
+            <button style="margin-top: 2%;" type="button" class="btn btn-success btn-lg btn-block">Ir al menu</button>
+        </a>
+    @endif
+@endprepend --}}
 
 {{-- DEBUG FINAL --}}
 
@@ -117,7 +130,7 @@
 @endfor --}}
 
 
-@php
+{{-- @php
     echo 'transicion -> ';
     var_dump($transicion);
-@endphp
+@endphp --}}

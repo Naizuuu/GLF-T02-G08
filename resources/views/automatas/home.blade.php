@@ -12,6 +12,7 @@
     {{-- <button type="button" class="btn btn-info btn-lg btn-block custom-btn" onclick="history.back(-1)">Volver atrás</button> --}}
     
     <button type="submit" class="btn btn-info btn-lg btn-block custom-btn" onclick="/* testeando() */">Confirmar</button>
-    {{-- <button type="button" class="btn btn-info btn-lg btn-block custom-btn" onclick="testeando()">Siguiente</button> --}}
+    @stack('menu')
 </form>
+
 @endsection

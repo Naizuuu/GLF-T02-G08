@@ -29,7 +29,7 @@
     </div>
 </div>
 
-@php $cant_trans = 0; @endphp
+@php $cant_trans = 0; $verificacion = true;  $nextStep = false; @endphp
 
 @isset($_GET['cantTrans_' . $cantEstado])
     @php
@@ -72,19 +72,34 @@
             $parteA = $_GET[$cantEstado. '_t' . $i . '_A'];
             $parteB = $_GET[$cantEstado. '_t' . $i . '_B'];
             $parteC = $_GET[$cantEstado. '_t' . $i . '_C'];
-            if($aux == $auxMax - 1) {
-                $transicion = $transicion . $parteA . ',' . $parteB . ',' . $parteC;
-                $aux++;
-            } else {
-                $transicion = $transicion . $parteA . ',' . $parteB . ',' . $parteC . ';';
-                $aux++;
+            $parteBsplit = str_split($parteB);
+            for($k = 0; $k < sizeof($parteBsplit); $k++) {
+                if(!in_array($parteBsplit[$k], $alfabetoArray, true)) {
+                    $verificacion = false;
+                    if($parteBsplit[$k] == '@') {
+                        $verificacion = true;
+                    }
+                }
             }
+            if($verificacion) {
+                if($aux == $auxMax - 1) {
+                    $transicion = $transicion . $parteA . ',' . $parteB . ',' . $parteC;
+                    $aux++;
+                } else {
+                    $transicion = $transicion . $parteA . ',' . $parteB . ',' . $parteC . ';';
+                    $aux++;
+                }
+            } else {
+                echo 'La transición ingresada no tiene relación al alfabeto ingresado.';
+                $parteB = '@';
+            }
+            $nextStep = true;
         @endphp
     @endisset
 @endfor
 
-@if($cant_trans > 0)
-    <div class="row" style="margin-top: 2%;" id="stepThree">
+@if($nextStep && $verificacion)
+    <div class="row" style="margin-top: 2%;">
         <div class="col-sm">
             <label for="estadoInicial" style="margin-bottom: 2%;">Seleccione el estado inicial</label>
             <select class="custom-select" name="{{$cantEstado}}_eInicial">
@@ -114,7 +129,16 @@
         </div>
         @endfor
     </div>
+    <input type="text" style="display: none;" class="form-control" name="{{$cantEstado}}_transicion" value="{{$transicion}}">
 @endif
+
+{{-- @prepend('menu')
+    @if(isset($_GET['cantidadEstados1_eInicial']) && isset($_GET['cantidadEstados2_eInicial']))
+        <a style="text-decoration: none;" id="gotomenu" href="{{route('home')}}">
+            <button style="margin-top: 2%;" type="button" class="btn btn-success btn-lg btn-block">Ir al menu</button>
+        </a>
+    @endif
+@endprepend --}}
 
 {{-- DEBUG FINAL --}}
 
@@ -138,7 +162,7 @@
 @endfor --}}
 
 
-@php
+{{-- @php
     echo 'transicion -> ';
     var_dump($transicion);
-@endphp
+@endphp --}}

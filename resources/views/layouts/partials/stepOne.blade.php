@@ -23,8 +23,6 @@
         @php
             $automataUno = $_GET['automataUno'];
             $automataDos = $_GET['automataDos'];
-            var_dump($_GET['automataUno']);
-            var_dump($_GET['automataDos']);
         @endphp
     @endisset
     <div class="row">
@@ -38,16 +36,10 @@
     @isset($_GET['alfabetoAutomata'])
         @php
             $alfabeto = $_GET['alfabetoAutomata'];
-            var_dump($alfabeto);
         @endphp
     @endisset
     {{-- <a style="text-decoration: none;" href="{{route('automata_home') . '?a=' . base64_encode($_GET['alfabetoAutomata']) . '&af=' . base64_encode($_GET['automataUno']) . '&at=' . base64_encode($_GET['automataDos'])}}">
         <button style="margin-top: 2%;" type="button" class="btn btn-info btn-lg btn-block custom-btn">Confirmar</button>
     </a> --}}
 </div>
-
-      {{-- Acá debería ir un @isset para verificar si se ingresa un AFD/AFD, un AFD/AFND, un AFND/AFD o AFND/AFND --}}
-      {{-- @isset($_GET['automataUno'])
-        
-      @endisset--}}
     

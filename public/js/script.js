@@ -10,15 +10,18 @@ $(stepTwo).ready(function(){
 /* ------------------------------------ */
 
 /* window.onload = function () { 
-    document.forms['form'].addEventListener('submit', avisarUsuario); 
+    document.forms['form'].addEventListener('submit', avisarUsuario);
 }
  
 function avisarUsuario(evObject) {
     evObject.preventDefault();
-    var nuevoNodo = document.createElement('h2');
-    nuevoNodo.innerHTML = '<h2 style="color:orange;">Enviando el formulario...</h2>';
-    document.body.appendChild(nuevoNodo);
-    var retrasar = setTimeout(procesaDentroDe2Segundos, 1000);
+    var nombre = document.getElementById('transAlfabeto').value;
+    var expReg = /^([A-Za-z0-9]+|@)$/;
+    if(!expReg.test(nombre)){
+        alert('La transicion no tiene los valores del abecedario ingresado.');
+    } else {
+        var retrasar = setTimeout(procesaDentroDe2Segundos, 1000);
+    }
 }
 
 function procesaDentroDe2Segundos() { 
