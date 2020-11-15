@@ -53,7 +53,7 @@
         </div>
         <div class="col-sm">  {{-- SEGUNDA COLUMNA --}}
             <div class="form-group">
-                <input type="text" class="form-control" name="{{$cantEstado}}_t{{$i}}_B" title="Debe ingresar la transición según el alfabeto" pattern="^[a-zA-Z0-9]+(,[a-zA-Z0-9]+)*$" placeholder="Ingrese transicion según alfabeto (Ej: aabbb)" autocomplete="off" value="<?php echo htmlspecialchars($_GET[$cantEstado. '_t' . $i . '_B'] ?? '', ENT_QUOTES); ?>" required>
+                <input type="text" class="form-control" name="{{$cantEstado}}_t{{$i}}_B" title="Debe ingresar la transición según el alfabeto (Ej: aabbb). Si desea ingresar una transición vacía use '@'." pattern="^([A-Za-z0-9]+|@)$" placeholder="Ingrese transicion según alfabeto (Ej: aabbb)" autocomplete="off" value="<?php echo htmlspecialchars($_GET[$cantEstado. '_t' . $i . '_B'] ?? '', ENT_QUOTES); ?>" required>
             </div>
         </div>
         <div class="col-sm-auto">  {{-- TERCERA COLUMNA --}}
@@ -83,7 +83,7 @@
     @endisset
 @endfor
 
-@isset($transicion)
+@if($cant_trans > 0)
     <div class="row" style="margin-top: 2%;">
         <div class="col-sm">
             <label for="estadoInicial" style="margin-bottom: 2%;">Seleccione el estado inicial</label>
@@ -114,7 +114,7 @@
         </div>
         @endfor
     </div>
-@endisset
+@endif
 
 {{-- DEBUG FINAL --}}
 
