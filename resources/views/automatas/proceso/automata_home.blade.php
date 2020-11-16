@@ -117,12 +117,12 @@
         <div class="col-sm">
             <h2 class="text-center">{{$automataUno}}</h1>
             <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataUno}} es el siguiente:</p>
-            <img src="{{$automata1S->$dibujoUnoS()}}">
+            <img src="{{$automata1S->$dibujoUnoS()}}" alt="Automata {{$automataUno}} Simplificado">
         </div>
         <div class="col-sm">
             <h2 class="text-center">{{$automataDos}}</h1>
             <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataDos}} es el siguiente:</p>
-            <img src="{{$automata2S->$dibujoDosS()}}">
+            <img src="{{$automata2S->$dibujoDosS()}}" alt="Automata {{$automataUno}} Simplificado">
         </div>
     </div>
 </div>
@@ -146,24 +146,24 @@
         <div class="col-sm">
             <h2 class="text-center">Complemento {{$automataUno}}</h1>
             @php $automata1CP->complemento(); @endphp
-            <img src="{{$automata1CP->$dibujoUnoCP()}}">
+            <img src="{{$automata1CP->$dibujoUnoCP()}}" alt="Complemento Automata {{$automataUno}}">
         </div>
         <div class="col-sm">
             <h2 class="text-center"> Complemento {{$automataDos}}</h1>
             @php $automata2CP->complemento(); @endphp
-            <img src="{{$automata2CP->$dibujoDosCP()}}">
+            <img src="{{$automata2CP->$dibujoDosCP()}}" alt="Complemento Automata {{$automataUno}}">
         </div>
     </div>
     <div class="row">
         <div class="col-sm">
             <h2 class="text-center">Simplificación del Complemento {{$automataUno}}</h1>
             @php $automata1CP->simplificacion(); @endphp
-            <img src="{{$automata1CP->$dibujoUnoCP()}}">
+            <img src="{{$automata1CP->$dibujoUnoCP()}}" alt="Simplificación del Complemento">
         </div>
         <div class="col-sm">
             <h2 class="text-center">Simplificación del Complemento {{$automataDos}}</h1>
             @php $automata2CP->simplificacion(); @endphp
-            <img src="{{$automata2CP->$dibujoDosCP()}}">
+            <img src="{{$automata2CP->$dibujoDosCP()}}" alt="Simplificación del Complemento">
         </div>
     </div>
 </div>
@@ -180,7 +180,7 @@
     <div class="row">
         <div class="col-sm">
         <h2 class="text-center">Unión {{$automataUno}} & {{$automataDos}}</h1>
-            <img src="{{$automataU->$dibujoUnoU()}}">
+            <img src="{{$automataU->$dibujoUnoU()}}" alt="Automata Unión {{$automataUno}} y {{$automataDos}}">
         </div>
     </div>
     {{-- <div class="row">
@@ -191,7 +191,7 @@
                 $automataU->simplificacion();
                 $dibujoUnoU = 'dibujarAFD';
             @endphp
-            <img src="{{$automataU->$dibujoUnoU()}}">
+            <img src="{{$automataU->$dibujoUnoU()}}" alt="Simplificación de la Unión">
         </div>
     </div> --}}
 
@@ -207,7 +207,7 @@
     <div class="row">
         <div class="col-sm">
             <h2 class="text-center">Concatenación {{$automataUno}} & {{$automataDos}}</h1>
-            <img src="{{$automataCT->$dibujoUnoCT()}}">
+            <img src="{{$automataCT->$dibujoUnoCT()}}" alt="Concatenación {{$automataUno}} & {{$automataDos}}">
         </div>
     </div>
     <div class="row">
@@ -218,7 +218,7 @@
                 $automataCT->simplificacion();
                 $dibujoUnoCT = 'dibujarAFD';
             @endphp
-            <img src="{{$automataCT->$dibujoUnoCT()}}">
+            <img src="{{$automataCT->$dibujoUnoCT()}}" alt="Simplificación de la Concatenación">
         </div>
     </div>
 </div>
@@ -233,7 +233,7 @@
     <div class="row">
         <div class="col-sm">
             <h2 class="text-center">Intersección {{$automataUno}} & {{$automataDos}}</h1>
-            <img src="{{$automataI->$dibujoUnoI()}}">
+            <img src="{{$automataI->$dibujoUnoI()}}" alt="Intersección {{$automataUno}} & {{$automataDos}}">
         </div>
     </div>
     <div class="row">
@@ -244,7 +244,7 @@
                 $automataI->simplificacion();
                 $dibujoUnoI = 'dibujarAFD';
             @endphp
-            <img src="{{$automataI->$dibujoUnoI()}}">
+            <img src="{{$automataI->$dibujoUnoI()}}" alt="Simplificación de la Intersección">
         </div>
     </div> --}}
 </div>
