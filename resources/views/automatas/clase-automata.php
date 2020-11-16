@@ -131,7 +131,9 @@ class AFD {
     public function dibujarAFD() {
         $link = "https://image-charts.com/chart?cht=gv&chl=digraph {";
         foreach ($this->estadosFinales as $estadoFinal) {
-            $link = $link . $estadoFinal . "[shape=doublecircle];";
+            if ($estadoFinal != "") {
+                $link = $link . $estadoFinal . "[shape=doublecircle];";
+            }
         }
         $link = $link . "ei[shape=point]; ei -> " . $this->estadoInicial . ';';
 
@@ -431,7 +433,9 @@ class AFND extends AFD {
     public function dibujarAFND() {
         $link = "https://image-charts.com/chart?cht=gv&chl=digraph {";
         foreach ($this->estadosFinales as $estadoFinal) {
-            $link = $link . $estadoFinal . "[shape=doublecircle];";
+            if ($estadoFinal != "") {
+                $link = $link . $estadoFinal . "[shape=doublecircle];";
+            }
         }
         $link = $link . "ei[shape=point]; ei -> " . $this->estadoInicial . ';';
 

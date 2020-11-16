@@ -26,17 +26,33 @@
             </div>
         </div>
         @prepend('menu')
-        @if(!empty($_GET['cantidadEstados1_estadosfinales']) && !empty($_GET['cantidadEstados2_estadosfinales']))
+        {{-- @if(!empty($_GET['cantidadEstados1_estadosfinales']) && !empty($_GET['cantidadEstados2_estadosfinales'])) --}}
+        @if(isset($_GET['cantidadEstados1_identificadores']) && isset($_GET['cantidadEstados2_identificadores']))
             @php
-                echo 'Cantidad Estados: '; var_dump($_GET['cantidadEstados1']); 
+                /* echo '<br>Cantidad Estados: '; var_dump($_GET['cantidadEstados1']); 
                 echo '<br>Estado Inicial: '; var_dump($_GET['cantidadEstados1_eInicial']);
                 echo '<br>Estados Finales: '; var_dump($_GET['cantidadEstados1_estadosfinales']);
                 echo '<br>F. Transicion: '; var_dump($_GET['cantidadEstados1_transicion']); 
                 echo '<br>Identificadores: '; var_dump($_GET['cantidadEstados1_identificadores']);
+                echo '<br>Alfabeto: '; var_dump($_GET['alfabetoAutomata']); */
+
+                $alfabeto = $_GET['alfabetoAutomata'];
+                /* automata 1 */
+                $identificadores1 = $_GET['cantidadEstados1_identificadores'];
+                $estadoInicial1 = $_GET['cantidadEstados1_eInicial'];
+                $estadosFinales1 = $_GET['cantidadEstados1_estadosfinales'];
+                $fTrans1 = $_GET['cantidadEstados1_transicion'];
+                /* automata 2 */
+                $identificadores2 = $_GET['cantidadEstados2_identificadores'];
+                $estadoInicial2 = $_GET['cantidadEstados2_eInicial'];
+                $estadosFinales2 = $_GET['cantidadEstados2_estadosfinales'];
+                $fTrans2 = $_GET['cantidadEstados2_transicion'];
+
             @endphp
-            <a style="text-decoration: none;" id="gotomenu" href="{{route('home')}}">
+            <a style="text-decoration: none;" id="gotomenu" href="{{route('automata_home') . '?a=' . base64_encode($alfabeto) . '&i1=' . base64_encode($identificadores1) . '&i2=' . base64_encode($identificadores2) . '&ei1=' . base64_encode($estadoInicial1) . '&ei2=' . base64_encode($estadoInicial2) . '&ef1=' . base64_encode($estadosFinales1) . '&ef2=' . base64_encode($estadosFinales2) . '&f1=' . base64_encode($fTrans1) . '&f2=' . base64_encode($fTrans2) . '&au1=' . base64_encode($automataUno) . '&au2=' . base64_encode($automataDos)}}">
                 <button style="margin-top: 2%;" type="button" class="btn btn-success btn-lg btn-block">Ir al menu</button>
             </a>
+            {{-- <a style="text-decoration: none;" href="{{route('procesando-grafo') . '?t=' . base64_encode($texto_de_adyacencias) . '&v=' . base64_encode($verticesGrafoSimple)}}"> --}}
         @endif
         @endprepend
     </div>

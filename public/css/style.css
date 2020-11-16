@@ -45,6 +45,10 @@ body {
     overflow: auto;
 }
 
+.oculto {
+    display: block !important;
+}
+
 /* Header */
 .masthead {
     margin-bottom: 2rem;
