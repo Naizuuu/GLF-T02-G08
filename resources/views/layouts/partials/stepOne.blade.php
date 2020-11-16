@@ -38,8 +38,5 @@
             $alfabeto = $_GET['alfabetoAutomata'];
         @endphp
     @endisset
-    {{-- <a style="text-decoration: none;" href="{{route('automata_home') . '?a=' . base64_encode($_GET['alfabetoAutomata']) . '&af=' . base64_encode($_GET['automataUno']) . '&at=' . base64_encode($_GET['automataDos'])}}">
-        <button style="margin-top: 2%;" type="button" class="btn btn-info btn-lg btn-block custom-btn">Confirmar</button>
-    </a> --}}
 </div>
     

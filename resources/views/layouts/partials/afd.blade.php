@@ -117,11 +117,6 @@
             }
         @endphp
     @endfor
-
-    {{-- @php 
-        /* var_dump($identificadores); */
-        /* var_dump($eFinales); */
-    @endphp --}}
     
     <input type="text" style="display: none;" class="form-control" name="{{$cantEstado}}_estadosfinales" value="{{$eFinales}}">
     <input type="text" style="display: none;" class="form-control" name="{{$cantEstado}}_transicion" value="{{$transicion}}">

@@ -87,7 +87,7 @@ class AFD {
     private function redireccionarTransicionesDeLlegada($estadoI, $estadoJ) {
         foreach ($this->funcionDeTransicion as $posicionI => $transiciones) {
             foreach ($transiciones as $alfabeto => $estado) {
-                if ($estado == $estadoI) {
+                if ($estado[0] == $estadoI) {
                     $this->funcionDeTransicion[$posicionI][$alfabeto][0] = (string)$estadoJ;
                 }
             }
@@ -132,16 +132,16 @@ class AFD {
         $link = "https://image-charts.com/chart?cht=gv&chl=digraph {";
         foreach ($this->estadosFinales as $estadoFinal) {
             if ($estadoFinal != "") {
-                $link = $link . $estadoFinal . "[shape=doublecircle];";
+                $link = $link . '"' . $estadoFinal . '"' . "[shape=doublecircle];";
             }
         }
-        $link = $link . "ei[shape=point]; ei -> " . $this->estadoInicial . ';';
+        $link = $link . '"ei"[shape=point]; "ei" -> ' . '"' . $this->estadoInicial . '"' . ';';
 
         foreach ($this->funcionDeTransicion as $estado => $transiciones) {
             $listos = [];
             foreach ($transiciones as $transicion) {
                 if (!in_array($transicion[0], $listos)) {
-                    $link = $link . $estado . " -> " . $transicion[0] . '[label="' . $this->buscarMasTransiciones($estado, $transicion[0]) . '"];';
+                    $link = $link . '"' . $estado . '"' . " -> " . '"' . $transicion[0] . '"' . '[label="' . $this->buscarMasTransiciones($estado, $transicion[0]) . '"];';
                     $listos[] = $transicion[0];
                 }
             }
@@ -434,17 +434,17 @@ class AFND extends AFD {
         $link = "https://image-charts.com/chart?cht=gv&chl=digraph {";
         foreach ($this->estadosFinales as $estadoFinal) {
             if ($estadoFinal != "") {
-                $link = $link . $estadoFinal . "[shape=doublecircle];";
+                $link = $link . '"' . $estadoFinal . '"' . "[shape=doublecircle];";
             }
         }
-        $link = $link . "ei[shape=point]; ei -> " . $this->estadoInicial . ';';
+        $link = $link . '"ei"[shape=point]; "ei" -> ' . '"' . $this->estadoInicial . '"' . ';';
 
         foreach ($this->relacionDeTransicion as $estado => $transiciones) {
             $listos = [];
             foreach ($transiciones as $transicion) {
                 foreach ($transicion as $t) {
                     if (!in_array($t, $listos)) {
-                        $link = $link . $estado . " -> " . $t . '[label="' . $this->buscarMasTransicionesAFND($estado, $t) . '"];';
+                        $link = $link . '"' . $estado . '"' . " -> " . '"' . $t . '"' . '[label="' . $this->buscarMasTransicionesAFND($estado, $t) . '"];';
                         $listos[] = $t;
                     }
                 }

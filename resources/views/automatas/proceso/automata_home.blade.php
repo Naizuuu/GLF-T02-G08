@@ -96,18 +96,20 @@
 
 <div class="procesoDos" style="display: none;">
     <h2 style="margin-bottom: 2%;" class="text-center display-4">Simplificación</h2>
-    {{-- @if($automataUno == "AFD" && $automataDos == "AFND") --}}
     @php
-        $automata1S = $automata1;
-        $automata2S = $automata2;
+        $automata1S = clone $automata1;
+        $automata2S = clone $automata2;
+        $dibujoUnoS = $dibujoUno;
+        $dibujoDosS = $dibujoDos;
         if($automataUno == 'AFND') {
             $automata1S = $automata1S->transformarAFNDaAFD($automata1S);
+            $dibujoUnoS = 'dibujarAFD';
         }
         if($automataDos == 'AFND') {
             $automata2S = $automata2S->transformarAFNDaAFD($automata2S);
+            $dibujoDosS = 'dibujarAFD';
         }
         $automata1S->simplificacion();
-        var_dump($automata1S);
         $automata2S->simplificacion();
     @endphp
 
@@ -115,172 +117,110 @@
         <div class="col-sm">
             <h2 class="text-center">{{$automataUno}}</h1>
             <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataUno}} es el siguiente:</p>
-            <img src="{{$automata1S->$dibujoUno()}}" alt="Automata {{$automataUno}}">
+            <img src="{{$automata1S->$dibujoUnoS()}}">
         </div>
         <div class="col-sm">
             <h2 class="text-center">{{$automataDos}}</h1>
             <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataDos}} es el siguiente:</p>
-            <img src="{{$automata2S->$dibujoDos()}}" alt="Automata {{$automataDos}}">
+            <img src="{{$automata2S->$dibujoDosS()}}">
         </div>
     </div>
-
-    {{-- @elseif($automataUno == "AFD" && $automataDos == "AFD")
-    @php
-    $automata1S = $automata1;
-    $automata1S->simplificacion();
-    //$automata1S->dibujarAFD();
-    $automata2S = $automata2;
-    $automata2S->simplificacion();
-    //$automata2S->dibujarAFD();
-    @endphp
-    <div class="row">
-        <div class="col-sm">
-            <h2 class="text-center">{{$automataUno}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataUno}} es el siguiente:</p>
-            <img src="{{$automata1S->$dibujoUno()}}" alt="Automata {{$automataUno}}">
-        </div>
-        <div class="col-sm">
-            <h2 class="text-center">{{$automataDos}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataDos}} es el siguiente:</p>
-            <img src="{{$automata2S->$dibujoDos()}}" alt="Automata {{$automataDos}}">
-        </div>
-    </div>
-    @elseif($automataUno == "AFND" && $automataDos == "AFD")
-    @php
-    $automata1S = $automata1;
-    $automata1S = $automata1S->transformarAFNDaAFD($automata1S);
-    $automata1S->simplificacion();
-    //$automata1S->dibujarAFND();
-    $automata2S = $automata2;
-    $automata2S->simplificacion();
-    //$automata2S->dibujarAFD();
-    @endphp
-    <div class="row">
-        <div class="col-sm">
-            <h2 class="text-center">{{$automataUno}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataUno}} es el siguiente:</p>
-            <img src="{{$automata1S->$dibujoUno()}}" alt="Automata {{$automataUno}}">
-        </div>
-        <div class="col-sm">
-            <h2 class="text-center">{{$automataDos}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataDos}} es el siguiente:</p>
-            <img src="{{$automata2S->$dibujoDos()}}" alt="Automata {{$automataDos}}">
-        </div>
-    </div>
-    @elseif($automataUno == "AFND" && $automataDos == "AFND")
-    @php
-    $automata1S = $automata1;
-    $automata1S = $automata1S->transformarAFNDaAFD($automata1S);
-    $automata1S->simplificacion();
-    //$automata1S->dibujarAFND();
-    $automata2S = $automata2;
-    $automata2S = $automata2S->transformarAFNDaAFD($automata2S);
-    $automata2S->simplificacion();
-    //$automata2S->dibujarAFND();
-    @endphp
-    <div class="row">
-        <div class="col-sm">
-            <h2 class="text-center">{{$automataUno}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataUno}} es el siguiente:</p>
-            <img src="{{$automata1S->$dibujoUno()}}" alt="Automata {{$automataUno}}">
-        </div>
-        <div class="col-sm">
-            <h2 class="text-center">{{$automataDos}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataDos}} es el siguiente:</p>
-            <img src="{{$automata2S->$dibujoDos()}}" alt="Automata {{$automataDos}}">
-        </div>
-    </div>
-    @endif --}}
-
-    {{-- simplificacion(si es afnd se convierte a AFD y se simplifica--}}
-        {{-- complemento (si uno es afnd se convierte a afd y se realiza el complemento y simplificar--}}
-        {{-- Union afd y simplificar--}}
-        {{-- Concatenacion afd y simplificar --}}
-        {{-- interseccion  simplificar--}}
 </div>
 <div class="procesoTres" style="display: none;">
     <h2 style="margin-bottom: 2%;" class="text-center display-4">Complemento</h2>
-    {{-- @if($automataUno == "AFD" && $automataDos == "AFND")
     @php
-    $automata1CP = $automata1;
-    $automata1CP->complemento();
-    $automata1CP->dibujarAFD();
-    $automata1CP->simplificacion();
-    $automata1CP->dibujarAFD();
-    $automata2CP = $automata2;
-    $automata2CP = $automata2CP->transformarAFNDaAFD($automata2CP);
-    $automata2CP->complemento();
-    $automata2CP->dibujarAFD();
-    $automata2CP->simplificacion();
-    $automata2CP->dibujarAFD();
+        $automata1CP = clone $automata1;
+        $automata2CP = clone $automata2;
+        $dibujoUnoCP = $dibujoUno;
+        $dibujoDosCP = $dibujoDos;
+        if($automataUno == 'AFND') {
+            $automata1CP = $automata1CP->transformarAFNDaAFD($automata1CP);
+            $dibujoUnoCP = 'dibujarAFD';
+        }
+        if($automataDos == 'AFND') {
+            $automata2CP = $automata2CP->transformarAFNDaAFD($automata2CP);
+            $dibujoDosCP = 'dibujarAFD';
+        }
     @endphp
-    @elseif($automataUno == "AFD" && $automataDos == "AFD")
-    @php
-    $automata1CP = $automata1;
-    $automata1CP->complemento();
-    $automata1CP->dibujarAFD();
-    $automata1CP->simplificacion();
-    $automata1CP->dibujarAFD();
-    $automata2CP = $automata2;
-    $automata2CP->complemento();
-    $automata2CP->dibujarAFD();
-    $automata2CP->simplificacion();
-    $automata2CP->dibujarAFD();
-    @endphp
-    @elseif($automataUno == "AFND" && $automataDos == "AFD")
-    @php
-    $automata1CP = $automata1;
-    $automata1CP = $automata1CP->transformarAFNDaAFD($automata1CP);
-    $automata1CP->complemento();
-    $automata1CP->dibujarAFD();
-    $automata1CP->simplificacion();
-    $automata1CP->dibujarAFD();
-    $automata2CP = $automata2;
-    $automata2CP->complemento();
-    $automata2CP->dibujarAFD(); 
-    $automata2CP->simplificacion();
-    $automata2CP->dibujarAFD();
-    @endphp
-    @elseif($automataUno == "AFND" && $automataDos == "AFND")
-    @php
-    $automata1CP = $automata1;
-    $automata1CP = $automata1CP->transformarAFNDaAFD($automata1CP);
-    $automata1CP->complemento();
-    $automata1CP->dibujarAFD();
-    $automata1CP->simplificacion();
-    $automata1CP->dibujarAFD();
-    $automata2CP = $automata2;
-    $automata2CP = $automata2CP->transformarAFNDaAFD($automata2CP);
-    $automata2CP->complemento();
-    $automata2CP->dibujarAFD();
-    $automata2CP->simplificacion();
-    $automata2CP->dibujarAFD();
-    @endphp
-    @endif --}}
+    <div class="row">
+        <div class="col-sm">
+            <h2 class="text-center">Complemento {{$automataUno}}</h1>
+            @php $automata1CP->complemento(); @endphp
+            <img src="{{$automata1CP->$dibujoUnoCP()}}">
+        </div>
+        <div class="col-sm">
+            <h2 class="text-center"> Complemento {{$automataDos}}</h1>
+            @php $automata2CP->complemento(); @endphp
+            <img src="{{$automata2CP->$dibujoDosCP()}}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <h2 class="text-center">Simplificación del Complemento {{$automataUno}}</h1>
+            @php $automata1CP->simplificacion(); @endphp
+            <img src="{{$automata1CP->$dibujoUnoCP()}}">
+        </div>
+        <div class="col-sm">
+            <h2 class="text-center">Simplificación del Complemento {{$automataDos}}</h1>
+            @php $automata2CP->simplificacion(); @endphp
+            <img src="{{$automata2CP->$dibujoDosCP()}}">
+        </div>
+    </div>
 </div>
 
 <div class="procesoCuatro" style="display: none;">
     <h2 style="margin-bottom: 2%;" class="text-center display-4">Unión</h2>
-    {{-- @php
+    @php
         $automataU = new AFND();
         $automataU = $automataU->union($automata1, $automata2);
-        $automataU->dibujarAFND();
-        $automataU = $automataU->transformarAFNDaAFD($automataU);
-        $automataU->simplificacion();
-        $automataU->dibujarAFD();         
-    @endphp --}}
+        $dibujoUnoU = 'dibujarAFND';
+        var_dump($automataU->$dibujoUnoU());
+    @endphp
+
+    <div class="row">
+        <div class="col-sm">
+        <h2 class="text-center">Unión {{$automataUno}} & {{$automataDos}}</h1>
+            <img src="{{$automataU->$dibujoUnoU()}}">
+        </div>
+    </div>
+    {{-- <div class="row">
+        <div class="col-sm">
+            <h2 class="text-center">Simplificación de la Unión</h1>
+            @php 
+                $automataU = $automataU->transformarAFNDaAFD($automataU); 
+                $automataU->simplificacion();
+                $dibujoUnoU = 'dibujarAFD';
+            @endphp
+            <img src="{{$automataU->$dibujoUnoU()}}">
+        </div>
+    </div> --}}
+
 </div>
 
 <div class="procesoCinco" style="display: none;">
     <h2 style="margin-bottom: 2%;" class="text-center display-4">Concatenación</h2>
-    {{-- @php
+    @php
         $automataCT = new AFND();
         $automataCT = $automataCT->concatenacion($automata1, $automata2);
-        $automataCT->dibujarAFND();
-        $automataCT = $automataCT->transformarAFNDaAFD($automataCT);
-        $automataCT->simplificacion();     
-        $automataCT->dibujarAFD();    
-    @endphp --}}
+        $dibujoUnoCT = 'dibujarAFND';
+    @endphp    
+    <div class="row">
+        <div class="col-sm">
+            <h2 class="text-center">Concatenación {{$automataUno}} & {{$automataDos}}</h1>
+            <img src="{{$automataCT->$dibujoUnoCT()}}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <h2 class="text-center">Simplificación de la Concatenación</h1>
+            @php 
+                $automataCT = $automataCT->transformarAFNDaAFD($automataCT); 
+                $automataCT->simplificacion();
+                $dibujoUnoCT = 'dibujarAFD';
+            @endphp
+            <img src="{{$automataCT->$dibujoUnoCT()}}">
+        </div>
+    </div>
 </div>
 
 <div class="procesoSeis" style="display: none;">
@@ -288,23 +228,29 @@
     {{-- @php
         $automataI = new AFND();
         $automataI = $automataI->interseccion($automata1, $automata2);
-        $automataI->dibujarAFND();
-        $automataI->simplificacion();
-        $automataI->dibujarAFD();
-    @endphp --}}
+        $dibujoUnoI = 'dibujarAFND';
+    @endphp    
+    <div class="row">
+        <div class="col-sm">
+            <h2 class="text-center">Intersección {{$automataUno}} & {{$automataDos}}</h1>
+            <img src="{{$automataI->$dibujoUnoI()}}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <h2 class="text-center">Simplificación de la Intersección</h1>
+            @php 
+                $automataI = $automataI->transformarAFNDaAFD($automataI); 
+                $automataI->simplificacion();
+                $dibujoUnoI = 'dibujarAFD';
+            @endphp
+            <img src="{{$automataI->$dibujoUnoI()}}">
+        </div>
+    </div> --}}
 </div>
 
-
-
-{{-- NAV PULENTO --}}
 <nav aria-label="..." style="display: inline-block; text-shadow: none; margin-top: 3%;">
     <ul class="pagination pagination-lg">
-        {{-- <li class="page-item"><span class="page-link" href="#" id="TEST1" onclick="myFunction();">1</span></li>
-        <li class="page-item"><span class="page-link" href="#" id="TEST2" onclick="myFunction();">2</span></li>
-        <li class="page-item"><span class="page-link" href="#" id="TEST3" onclick="">3</span></li>
-        <li class="page-item"><span class="page-link" href="#" id="TEST4" onclick="">4</span></li>
-        <li class="page-item"><span class="page-link" href="#" id="TEST5" onclick="">5</span></li>
-        <li class="page-item"><span class="page-link" href="#" id="TEST6" onclick="">6</span></li> --}}
         <li class="page-item"><button type="button" class="page-link" id="navUno" onclick="">Resultado Inicio</button></li>
         <li class="page-item"><button type="button" class="page-link" id="navDos" onclick="">Simplificación</button></li>
         <li class="page-item"><button type="button" class="page-link" id="navTres" onclick="">Complemento</button></li>
