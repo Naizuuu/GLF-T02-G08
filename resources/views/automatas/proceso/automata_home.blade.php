@@ -20,20 +20,6 @@
     $fTrans2 = base64_decode($_GET['f2']);
     $automataDos = base64_decode($_GET['au2']);
 
-    /* echo '<br>Estado Inicial 1: '; var_dump($estadoInicial1);
-    echo '<br>Estados Finales 1: '; var_dump($estadosFinales1);
-    echo '<br>F. Transicion 1: '; var_dump($fTrans1); 
-    echo '<br>Identificadores 1: '; var_dump($identificadores1);
-    echo '<br>Alfabeto: '; var_dump($alfabeto);
-    echo '<br>Tipo 1: '; var_dump($automataUno);
-    echo '<br><br>';
-    echo '<br>Estado Inicial 2: '; var_dump($estadoInicial2);
-    echo '<br>Estados Finales 2: '; var_dump($estadosFinales2);
-    echo '<br>F. Transicion 2: '; var_dump($fTrans2); 
-    echo '<br>Identificadores 2: '; var_dump($identificadores2);
-    echo '<br>Alfabeto: '; var_dump($alfabeto);
-    echo '<br>Tipo 2: '; var_dump($automataDos); */
-
     if($automataUno == "AFD" && $automataDos == "AFND") {
         $automata1 = new AFD();
         $automata1->crearAFD($identificadores1, $alfabeto, $estadoInicial1, $estadosFinales1);
@@ -83,12 +69,10 @@
     <div class="row">
         <div class="col-sm">
             <h2 class="text-center">{{$automataUno}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataUno}} es el siguiente:</p>
             <img src="{{$automata1->$dibujoUno()}}" alt="Automata {{$automataUno}}">
         </div>
         <div class="col-sm">
             <h2 class="text-center">{{$automataDos}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataDos}} es el siguiente:</p>
             <img src="{{$automata2->$dibujoDos()}}" alt="Automata {{$automataDos}}">
         </div>
     </div>
@@ -116,12 +100,10 @@
     <div class="row">
         <div class="col-sm">
             <h2 class="text-center">{{$automataUno}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataUno}} es el siguiente:</p>
             <img src="{{$automata1S->$dibujoUnoS()}}" alt="Automata {{$automataUno}} Simplificado">
         </div>
         <div class="col-sm">
             <h2 class="text-center">{{$automataDos}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataDos}} es el siguiente:</p>
             <img src="{{$automata2S->$dibujoDosS()}}" alt="Automata {{$automataUno}} Simplificado">
         </div>
     </div>
@@ -174,7 +156,6 @@
         $automataU = new AFND();
         $automataU = $automataU->union($automata1, $automata2);
         $dibujoUnoU = 'dibujarAFND';
-        var_dump($automataU->$dibujoUnoU());
     @endphp
 
     <div class="row">

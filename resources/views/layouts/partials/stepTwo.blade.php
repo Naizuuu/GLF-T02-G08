@@ -26,15 +26,9 @@
             </div>
         </div>
         @prepend('menu')
-        {{-- @if(!empty($_GET['cantidadEstados1_estadosfinales']) && !empty($_GET['cantidadEstados2_estadosfinales'])) --}}
+
         @if(isset($_GET['cantidadEstados1_identificadores']) && isset($_GET['cantidadEstados2_identificadores']))
             @php
-                echo '<br>Cantidad Estados: '; var_dump($_GET['cantidadEstados1']); 
-                echo '<br>Estado Inicial: '; var_dump($_GET['cantidadEstados1_eInicial']);
-                echo '<br>Estados Finales: '; var_dump($_GET['cantidadEstados1_estadosfinales']);
-                echo '<br>F. Transicion: '; var_dump($_GET['cantidadEstados1_transicion']); 
-                echo '<br>Identificadores: '; var_dump($_GET['cantidadEstados1_identificadores']);
-                echo '<br>Alfabeto: '; var_dump($_GET['alfabetoAutomata']);
 
                 $alfabeto = $_GET['alfabetoAutomata'];
                 /* automata 1 */
