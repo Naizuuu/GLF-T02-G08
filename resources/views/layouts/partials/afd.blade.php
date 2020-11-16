@@ -12,7 +12,7 @@
     </div>
 </div>
 
-@php $cant_estados = 0; @endphp
+@php $cant_estados = 0; $identificadores = ''; $eFinales = ''; @endphp
 
 @isset($_GET[$cantEstado])
     @php
@@ -87,13 +87,52 @@
             <div class="pretty p-default p-round">
             <input type="checkbox" name="{{$cantEstado}}_eFinal_{{$i}}" value="{{$iden . $i}}" <?php if(isset($_GET[$cantEstado . '_eFinal_' . $i]) && $_GET[$cantEstado . '_eFinal_' . $i] == ($iden . $i)) { echo 'checked="checked"'; } ?>>
                 <div class="state p-primary-o">
-                <label>{{$iden . $i}}</label>
+                    <label>{{$iden . $i}}</label>
                 </div>
             </div>
         </div>
         @endfor
     </div>
+
+    @for($j = 0; $j < $cant_estados; $j++)
+        @php
+            if($j == $cant_estados - 1) {
+                $identificadores = $identificadores . $iden . $j;
+                if(isset($_GET[$cantEstado . '_eFinal_' . $j])) {
+                    if(empty($eFinales)) {
+                        $eFinales = $eFinales . $_GET[$cantEstado . '_eFinal_' . $j];
+                    } else {
+                        $eFinales = $eFinales . "," . $_GET[$cantEstado . '_eFinal_' . $j];
+                    }
+                }
+            } else {
+                $identificadores = $identificadores . $iden . $j . ',';
+                if(isset($_GET[$cantEstado . '_eFinal_' . $j])) {
+                    if(empty($eFinales)) {
+                        $eFinales = $eFinales . $_GET[$cantEstado . '_eFinal_' . $j];
+                    } else {
+                        $eFinales = $eFinales . "," . $_GET[$cantEstado . '_eFinal_' . $j];
+                    }
+                }
+            }
+        @endphp
+    @endfor
+
+    {{-- @php 
+        /* var_dump($identificadores); */
+        /* var_dump($eFinales); */
+    @endphp --}}
+    
+    <input type="text" style="display: none;" class="form-control" name="{{$cantEstado}}_estadosfinales" value="{{$eFinales}}">
     <input type="text" style="display: none;" class="form-control" name="{{$cantEstado}}_transicion" value="{{$transicion}}">
+    <input type="text" style="display: none;" class="form-control" name="{{$cantEstado}}_identificadores" value="{{$identificadores}}">
+    
+    @isset($_GET[$cantEstado . '_estadosfinales'])
+    @php 
+        echo 'Por favor, presione confirmar nuevamente.';
+    @endphp
+    @endisset
+
 @endisset
 
 {{-- @isset($_GET[$cantEstado.'_transicion'])

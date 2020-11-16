@@ -26,13 +26,14 @@
             </div>
         </div>
         @prepend('menu')
-        @if(isset($_GET['cantidadEstados1_eInicial']) && isset($_GET['cantidadEstados2_eInicial']))
-            {{-- @php
-                var_dump($_GET['cantidadEstados1']); 
-                var_dump($_GET['cantidadEstados1_eInicial']);
-                var_dump($_GET['cantidadEstados1_eFinal_' . 0]);
-                var_dump($_GET['cantidadEstados1_transicion']); 
-            @endphp --}}
+        @if(!empty($_GET['cantidadEstados1_estadosfinales']) && !empty($_GET['cantidadEstados2_estadosfinales']))
+            @php
+                echo 'Cantidad Estados: '; var_dump($_GET['cantidadEstados1']); 
+                echo '<br>Estado Inicial: '; var_dump($_GET['cantidadEstados1_eInicial']);
+                echo '<br>Estados Finales: '; var_dump($_GET['cantidadEstados1_estadosfinales']);
+                echo '<br>F. Transicion: '; var_dump($_GET['cantidadEstados1_transicion']); 
+                echo '<br>Identificadores: '; var_dump($_GET['cantidadEstados1_identificadores']);
+            @endphp
             <a style="text-decoration: none;" id="gotomenu" href="{{route('home')}}">
                 <button style="margin-top: 2%;" type="button" class="btn btn-success btn-lg btn-block">Ir al menu</button>
             </a>
