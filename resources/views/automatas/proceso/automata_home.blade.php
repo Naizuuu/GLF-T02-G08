@@ -69,12 +69,10 @@
     <div class="row">
         <div class="col-sm">
             <h2 class="text-center">{{$automataUno}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataUno}} es el siguiente:</p>
             <img src="{{$automata1->$dibujoUno()}}" alt="Automata {{$automataUno}}">
         </div>
         <div class="col-sm">
             <h2 class="text-center">{{$automataDos}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataDos}} es el siguiente:</p>
             <img src="{{$automata2->$dibujoDos()}}" alt="Automata {{$automataDos}}">
         </div>
     </div>
@@ -102,12 +100,10 @@
     <div class="row">
         <div class="col-sm">
             <h2 class="text-center">{{$automataUno}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataUno}} es el siguiente:</p>
             <img src="{{$automata1S->$dibujoUnoS()}}" alt="Automata {{$automataUno}} Simplificado">
         </div>
         <div class="col-sm">
             <h2 class="text-center">{{$automataDos}}</h1>
-            <p>En base a los datos ingresados por usted, el diseño de su autómata {{$automataDos}} es el siguiente:</p>
             <img src="{{$automata2S->$dibujoDosS()}}" alt="Automata {{$automataUno}} Simplificado">
         </div>
     </div>
