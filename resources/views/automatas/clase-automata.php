@@ -128,7 +128,7 @@ class AFD {
         }
         return implode(",", $caracteres);
     }
-    public function dibujar() {
+    public function dibujarAFD() {
         $link = "https://image-charts.com/chart?cht=gv&chl=digraph {";
         foreach ($this->estadosFinales as $estadoFinal) {
             $link = $link . $estadoFinal . "[shape=doublecircle];";
@@ -137,7 +137,7 @@ class AFD {
 
         foreach ($this->funcionDeTransicion as $estado => $transiciones) {
             $listos = [];
-            foreach ($transiciones as $caracter => $transicion) {
+            foreach ($transiciones as $transicion) {
                 if (!in_array($transicion[0], $listos)) {
                     $link = $link . $estado . " -> " . $transicion[0] . '[label="' . $this->buscarMasTransiciones($estado, $transicion[0]) . '"];';
                     $listos[] = $transicion[0];
@@ -417,6 +417,38 @@ class AFND extends AFD {
         $afd3 = $afnd->transformarAFNDaAFD($afnd);
         $afd3->complemento();
         return $afd3;
+    }
+    private function buscarMasTransicionesAFND($estado1, $estado2) {
+        $caracter = [];
+        foreach ($this->relacionDeTransicion[$estado1] as $a => $transicion) {
+            foreach ($transicion as $t) {
+                if ($t == $estado2) {
+                    $caracteres[] = $a;
+                }
+            }
+        }
+        return implode(",", $caracteres);
+    }
+    public function dibujarAFND() {
+        $link = "https://image-charts.com/chart?cht=gv&chl=digraph {";
+        foreach ($this->estadosFinales as $estadoFinal) {
+            $link = $link . $estadoFinal . "[shape=doublecircle];";
+        }
+        $link = $link . "ei[shape=point]; ei -> " . $this->estadoInicial . ';';
+
+        foreach ($this->relacionDeTransicion as $estado => $transiciones) {
+            $listos = [];
+            foreach ($transiciones as $transicion) {
+                foreach ($transicion as $t) {
+                    if (!in_array($t, $listos)) {
+                        $link = $link . $estado . " -> " . $t . '[label="' . $this->buscarMasTransicionesAFND($estado, $t) . '"];';
+                        $listos[] = $t;
+                    }
+                }
+            }
+        }
+        $link = $link . "}";
+        return $link;
     }
 }
 ?>
