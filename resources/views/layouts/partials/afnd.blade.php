@@ -154,11 +154,6 @@
         @endphp
     @endfor
 
-    {{-- @php 
-        var_dump($identificadores);
-        var_dump($eFinales);
-    @endphp --}}
-
     <input type="text" style="display: none;" class="form-control" name="{{$cantEstado}}_estadosfinales" value="{{$eFinales}}">
     <input type="text" style="display: none;" class="form-control" name="{{$cantEstado}}_transicion" value="{{$transicion}}">
     <input type="text" style="display: none;" class="form-control" name="{{$cantEstado}}_identificadores" value="{{$identificadores}}">
@@ -169,30 +164,3 @@
     @endphp
     @endisset
 @endif
-
-{{-- DEBUG FINAL --}}
-
-{{-- @isset($_GET[$cantEstado.'_eInicial'])
-    @php
-        echo 'eInicial -> ';
-        var_dump($_GET[$cantEstado.'_eInicial']);
-    @endphp
-    <br>
-@endisset
-
-@php $i = 0 @endphp
-@for($i = 0; $i < $cant_estados; $i++)
-    @isset($_GET[$cantEstado . '_eFinal_' . $i])
-        @php
-            echo 'eFinal -> ';
-            var_dump($_GET[$cantEstado . '_eFinal_' . $i]);
-        @endphp
-        <br>
-    @endisset
-@endfor --}}
-
-
-{{-- @php
-    echo 'transicion -> ';
-    var_dump($transicion);
-@endphp --}}

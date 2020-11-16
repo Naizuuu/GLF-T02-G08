@@ -20,20 +20,6 @@
     $fTrans2 = base64_decode($_GET['f2']);
     $automataDos = base64_decode($_GET['au2']);
 
-    /* echo '<br>Estado Inicial 1: '; var_dump($estadoInicial1);
-    echo '<br>Estados Finales 1: '; var_dump($estadosFinales1);
-    echo '<br>F. Transicion 1: '; var_dump($fTrans1); 
-    echo '<br>Identificadores 1: '; var_dump($identificadores1);
-    echo '<br>Alfabeto: '; var_dump($alfabeto);
-    echo '<br>Tipo 1: '; var_dump($automataUno);
-    echo '<br><br>';
-    echo '<br>Estado Inicial 2: '; var_dump($estadoInicial2);
-    echo '<br>Estados Finales 2: '; var_dump($estadosFinales2);
-    echo '<br>F. Transicion 2: '; var_dump($fTrans2); 
-    echo '<br>Identificadores 2: '; var_dump($identificadores2);
-    echo '<br>Alfabeto: '; var_dump($alfabeto);
-    echo '<br>Tipo 2: '; var_dump($automataDos); */
-
     if($automataUno == "AFD" && $automataDos == "AFND") {
         $automata1 = new AFD();
         $automata1->crearAFD($identificadores1, $alfabeto, $estadoInicial1, $estadosFinales1);
