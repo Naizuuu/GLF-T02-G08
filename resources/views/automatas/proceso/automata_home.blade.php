@@ -160,7 +160,6 @@
         $automataU = new AFND();
         $automataU = $automataU->union($automata1, $automata2);
         $dibujoUnoU = 'dibujarAFND';
-        var_dump($automataU->$dibujoUnoU());
     @endphp
 
     <div class="row">
