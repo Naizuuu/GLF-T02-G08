@@ -419,7 +419,6 @@ class AFND extends AFD {
         return $afd3;
     }
     private function buscarMasTransicionesAFND($estado1, $estado2) {
-        $caracter = [];
         foreach ($this->relacionDeTransicion[$estado1] as $a => $transicion) {
             foreach ($transicion as $t) {
                 if ($t == $estado2) {
